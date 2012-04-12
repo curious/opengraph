@@ -7,8 +7,8 @@ require 'rspec'
 require 'rspec/autorun'
 require 'webmock/rspec'
 
-include WebMock
+include WebMock::API
 
-Spec::Runner.configure do |config|
-  
+RSpec.configure do |config|
+
 end
