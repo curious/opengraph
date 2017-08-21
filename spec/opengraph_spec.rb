@@ -6,8 +6,8 @@ describe OpenGraph do
   
   describe '.parse' do
     it 'should return false if there isnt valid Open Graph info' do
-      OpenGraph.parse("").should be_false
-      OpenGraph.parse(partial).should be_false
+      OpenGraph.parse("").should eq(false)
+      OpenGraph.parse(partial).should eq(false)
     end
     
     it 'should otherwise return an OpenGraph::Object' do
@@ -17,14 +17,14 @@ describe OpenGraph do
     context ' without strict mode' do
       subject{ OpenGraph.parse(partial, false) }
       
-      it { should_not be_false }
+      it { should_not eq(false) }
       it { subject.title.should == 'Partialized' }
     end
   end
 
   describe 'being customisable' do
     it 'should accept a block' do
-      mock_proc = mock
+      mock_proc = double
       mock_proc.should_receive(:bar).
         with(an_instance_of(Nokogiri::XML::Element), an_instance_of(OpenGraph::Object)).
         exactly(8).times
@@ -52,9 +52,9 @@ describe OpenGraph do
     
     it 'should catch errors' do
       stub_request(:get, 'http://example.com').to_return(:status => 404)
-      OpenGraph.fetch('http://example.com').should be_false
+      OpenGraph.fetch('http://example.com').should eq(false)
       RestClient.should_receive(:get).with('http://example.com').and_raise(SocketError)
-      OpenGraph.fetch('http://example.com').should be_false
+      OpenGraph.fetch('http://example.com').should eq(false)
     end
   end
 end
